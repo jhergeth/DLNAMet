@@ -1,0 +1,17 @@
+<template name="scanServers">
+    <form class="form-horizontal" role="form">
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="server">From:</label>
+            <div class="col-sm-8">
+                <select class="form-control" id="server">
+                    <option></option>
+                    {{#with scanServers}}
+                        {{#each s in content }}
+                            <option value={{s.id}}>{{s.name}}</option>
+                        {{/each}}
+                    {{/with}}
+                </select>
+            </div>
+        </div>
+    </form>
+</template>

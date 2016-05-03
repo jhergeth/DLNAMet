@@ -1,0 +1,18 @@
+
+<template name="scanRenderer">
+    <form class="form-horizontal" role="form">
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="server">To:</label>
+            <div class="col-sm-8">
+                <select class="form-control" id="server">
+                    <option></option>
+                    {{#with scanRenderer}}
+                        {{#each s in content }}
+                            <option value={{s.id}}>{{s.name}}</option>
+                        {{/each}}
+                    {{/with}}
+                </select>
+            </div>
+        </div>
+    </form>
+</template>
