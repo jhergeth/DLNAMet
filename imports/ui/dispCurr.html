@@ -1,7 +1,16 @@
 
 <template name="dispCurr">
-    <div class="col-sm-4">Rest time: {{playRestTime}}</div>
-    <div class="col-sm-4"> #{{itemNo}} / {{listLength}}</div>
-    <div class="col-sm-4"> Image name: {{playTitle}}</div>
-    <div class="col-sm-4"><img class="img-responsive" src={{playPath}} alt={{playPath}}></div>
+    <div class="row">
+        <div class="row">
+            <div class="col-sm-11"><img class="img-responsive" src={{playPath}} alt={{playPath}}></div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">Rest time: {{playRestTime}}</div>
+            <div class="col-sm-2"> #{{itemNo}} / {{listLength}}</div>
+            <div class="col-sm-6">{{playList}}</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-11">{{playTitle}}</div>
+        </div>
+    </div>
 </template>

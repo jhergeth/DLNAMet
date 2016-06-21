@@ -3,7 +3,7 @@
  */
 import { Meteor } from 'meteor/meteor';
 
-const DLNA_SERVER = 'http://192.168.178.13:9090/';
+const DLNA_SERVER = 'http://192.168.178.13:8080/';
 
 
 export var buildGetDir = function(srv, itm){
@@ -55,6 +55,15 @@ Meteor.methods({
 
   'dlna.getDirs': function (srv, itm) {
     var apiUrl = DLNA_SERVER + 'getDirs?name='+srv+'&itm='+itm;
+    // avoid blocking other method calls from the same client
+    this.unblock();
+    // asynchronous call to the dedicated API calling function
+    var response = Meteor.wrapAsync(apiCall)(apiUrl);
+    return response;
+  },
+
+  'dlna.cmd': function (cmd, i) {
+    var apiUrl = DLNA_SERVER + 'cmd?do='+cmd+'&no='+i;
     // avoid blocking other method calls from the same client
     this.unblock();
     // asynchronous call to the dedicated API calling function

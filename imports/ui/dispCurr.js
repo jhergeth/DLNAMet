@@ -52,5 +52,12 @@ Template.dispCurr.helpers({
     else
       return "";
   },
+  playList: function(){
+    var scr = getState('dlna.rendererSelected');
+    if(typeof scr !== 'undefined')
+      return dlnaStatus.findOne(scr).playlist;
+    else
+      return "";
+  },
 });
 

@@ -29,11 +29,12 @@ Template.dlnaUI.onRendered(function(){
 });
 
 Template.dlnaUI.events({
-  'click button': function(event){
+  'click .go': function(event){
     var scr = getState('dlna.rendererSelected');
-    var node = getState('dlna.selectedNode');
-    var dur = getState('dlna.duration');
     if(scr != null ){
+      var node = getState('dlna.selectedNode');
+      setState('dlna.PlaylistTitle', node.title);
+      var dur = getState('dlna.duration');
       var parts = node.key.split("|");
       var srv = parts[0];
       var key = "";
@@ -47,8 +48,36 @@ Template.dlnaUI.events({
         setState('dlna.doPlay', 'play '+key+' from '+srv+' to '+scr);
       });
     }
-
   },
+
+  'click .backk': function(event){
+    var scr = getState('dlna.rendererSelected');
+    if(scr != null ){
+      Meteor.call('dlna.cmd', 'jump', -10);
+    }
+  },
+
+  'click .back': function(event){
+    var scr = getState('dlna.rendererSelected');
+    if(scr != null ){
+      Meteor.call('dlna.cmd', 'jump', -1);
+    }
+  },
+
+  'click .forw': function(event){
+    var scr = getState('dlna.rendererSelected');
+    if(scr != null ){
+      Meteor.call('dlna.cmd', 'jump', 1);
+    }
+  },
+
+  'click .forww': function(event){
+    var scr = getState('dlna.rendererSelected');
+    if(scr != null ){
+      Meteor.call('dlna.cmd', 'jump', 10);
+    }
+  },
+
   'change #renderer': function(event){
     setState('dlna.rendererSelected', event.target.value);
   },
