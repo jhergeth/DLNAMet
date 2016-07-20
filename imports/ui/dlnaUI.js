@@ -53,28 +53,28 @@ Template.dlnaUI.events({
   'click .backk': function(event){
     var scr = getState('dlna.rendererSelected');
     if(scr != null ){
-      Meteor.call('dlna.cmd', 'jump', -10);
+      Meteor.call('dlna.cmd', 'jump', scr, -10);
     }
   },
 
   'click .back': function(event){
     var scr = getState('dlna.rendererSelected');
     if(scr != null ){
-      Meteor.call('dlna.cmd', 'jump', -1);
+      Meteor.call('dlna.cmd', 'jump', scr, -1);
     }
   },
 
   'click .forw': function(event){
     var scr = getState('dlna.rendererSelected');
     if(scr != null ){
-      Meteor.call('dlna.cmd', 'jump', 1);
+      Meteor.call('dlna.cmd', 'jump', scr, 1);
     }
   },
 
   'click .forww': function(event){
     var scr = getState('dlna.rendererSelected');
     if(scr != null ){
-      Meteor.call('dlna.cmd', 'jump', 10);
+      Meteor.call('dlna.cmd', 'jump', scr, 10);
     }
   },
 

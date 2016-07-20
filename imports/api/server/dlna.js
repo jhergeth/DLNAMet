@@ -3,12 +3,12 @@
  */
 import { Meteor } from 'meteor/meteor';
 
-const DLNA_SERVER = 'http://192.168.178.13:8080/';
+const DLNA_SERVER = 'http://dlna:9080/';
 
 
 export var buildGetDir = function(srv, itm){
   return DLNA_SERVER + 'getDirs?name='+srv+'&itm='+itm;
-}
+};
 
 var apiCall = function (apiUrl, callback) {
   // try…catch allows you to handle errors
@@ -31,7 +31,7 @@ var apiCall = function (apiUrl, callback) {
     var myError = new Meteor.Error(errorCode, errorMessage);
     callback(myError, null);
   }
-}
+};
 
 
 Meteor.methods({
@@ -62,8 +62,8 @@ Meteor.methods({
     return response;
   },
 
-  'dlna.cmd': function (cmd, i) {
-    var apiUrl = DLNA_SERVER + 'cmd?do='+cmd+'&no='+i;
+  'dlna.cmd': function (cmd, rend, i) {
+    var apiUrl = DLNA_SERVER + 'cmd?do='+cmd+'&rend='+rend+'&no='+i;
     // avoid blocking other method calls from the same client
     this.unblock();
     // asynchronous call to the dedicated API calling function
@@ -96,7 +96,7 @@ Meteor.methods({
 
 
 const POLL_INTERVAL = 500;
-Meteor.publish('dlna.status', function() {
+Meteor.publish('dlna.Status', function() {
   const publishedKeys = {};
 
   const poll = () => {
