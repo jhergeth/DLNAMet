@@ -22,7 +22,6 @@ Template.dlnaUI.helpers({
 Template.dlnaUI.onCreated(function bodyOnCreated() {
   const instance = Template.instance();
 
-  scanRenderer();
 });
 
 Template.dlnaUI.onRendered(function(){
@@ -30,7 +29,7 @@ Template.dlnaUI.onRendered(function(){
 
 Template.dlnaUI.events({
   'click .go': function(event){
-    var scr = getState('dlna.rendererSelected');
+    var scr = this.id;
     if(scr != null ){
       var node = getState('dlna.selectedNode');
       setState('dlna.PlaylistTitle', node.title);
@@ -51,28 +50,28 @@ Template.dlnaUI.events({
   },
 
   'click .backk': function(event){
-    var scr = getState('dlna.rendererSelected');
+    var scr = this.id;
     if(scr != null ){
       Meteor.call('dlna.cmd', 'jump', scr, -10);
     }
   },
 
   'click .back': function(event){
-    var scr = getState('dlna.rendererSelected');
+    var scr = this.id;
     if(scr != null ){
       Meteor.call('dlna.cmd', 'jump', scr, -1);
     }
   },
 
   'click .forw': function(event){
-    var scr = getState('dlna.rendererSelected');
+    var scr = this.id;
     if(scr != null ){
       Meteor.call('dlna.cmd', 'jump', scr, 1);
     }
   },
 
   'click .forww': function(event){
-    var scr = getState('dlna.rendererSelected');
+    var scr = this.id;
     if(scr != null ){
       Meteor.call('dlna.cmd', 'jump', scr, 10);
     }
@@ -88,16 +87,3 @@ Template.dlnaUI.events({
     setState('dlna.random', event.target.value);
   },
 });
-
-function scanRenderer(){
-  instance = Template.instance();
-  Meteor.call('dlna.scanRenderer', function (err, res) {
-    // The method call sets the Session variable to the callback value
-    if (err) {
-      setState('dlna.Error', {error: err});
-    } else {
-      setState('dlna.scanRenderer', res);
-      return res;
-    }
-  });
-}

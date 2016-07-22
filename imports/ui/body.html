@@ -1,7 +1,7 @@
 <body>
 <div class="container">
     <header>
-        <h1>DLNA Controler</h1>
+        <h1>DLNA Controller</h1>
     </header>
 
     <div class="row">
@@ -9,12 +9,24 @@
             {{> fancyTree}}
         </div>
         <div class="col-sm-6">
-            {{> dispCurr}}
+            <img class="img-responsive" src={{selectedPath}} alt={{selectedPath}}>
         </div>
     </div>
-    <div class="row">
-        {{> dlnaUI}}
-    </div>
+
+    {{#with scanRenderer}}
+        {{#each s in content }}
+            <div class="row">
+                <div class="col-sm-11">
+                    <label class="control-label" for="renderer">{{s.name}}:</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-11">
+                    {{>dispCurr s}}
+                </div>
+            </div>
+        {{/each}}
+    {{/with}}
 
 </div>
 

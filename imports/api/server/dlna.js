@@ -4,6 +4,7 @@
 import { Meteor } from 'meteor/meteor';
 
 const DLNA_SERVER = 'http://dlna:9080/';
+//const DLNA_SERVER = 'http://localhost:9080/';
 
 
 export var buildGetDir = function(srv, itm){
@@ -83,25 +84,25 @@ Meteor.methods({
     return response;
   },
 
-  'dlna.stat': function () {
-    var apiUrl = DLNA_SERVER + 'pstat';
-    // avoid blocking other method calls from the same client
-    this.unblock();
-    // asynchronous call to the dedicated API calling function
-    var response = Meteor.wrapAsync(apiCall)(apiUrl);
-    return response;
-  },
+  // 'dlna.stat': function (rend) {
+  //   var apiUrl = DLNA_SERVER + 'pstat?rend=' + rend;
+  //   // avoid blocking other method calls from the same client
+  //   this.unblock();
+  //   // asynchronous call to the dedicated API calling function
+  //   var response = Meteor.wrapAsync(apiCall)(apiUrl);
+  //   return response;
+  // },
 
 });
 
 
 const POLL_INTERVAL = 500;
-Meteor.publish('dlna.Status', function() {
+Meteor.publish('dlna.Status', function(renderer) {
   const publishedKeys = {};
 
   const poll = () => {
     // Let's assume the data comes back as an array of JSON documents, with an _id field, for simplicity
-    const data = HTTP.get(DLNA_SERVER + 'pstat', "");
+    const data = HTTP.get(DLNA_SERVER + 'pstatall');
 
     /*
      {
@@ -120,13 +121,18 @@ Meteor.publish('dlna.Status', function() {
      */
     if(!(data.content === null)){
       var c = JSON.parse(data.content).content;
-      var key = c.screen;
-      if (publishedKeys[key]) {
-        this.changed('dlna.screenStatus', key, c);
-      } else {
-        publishedKeys[key] = true;
-        if (publishedKeys[key]) {
-          this.added('dlna.screenStatus', key, c);
+      if( c != null && c[0] != null && c[0].screen != null ){
+        for( i = 0; i < c.length; i++ ){
+          var key = c[i].screen;
+          if (publishedKeys[key]) {
+            this.changed('dlna.screenStatus', key, c[i]);
+          } else {
+            publishedKeys[key] = true;
+            if (publishedKeys[key]) {
+              this.added('dlna.screenStatus', key, c[i]);
+            }
+          }
+
         }
       }
     }

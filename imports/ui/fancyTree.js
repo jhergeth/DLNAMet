@@ -44,7 +44,7 @@ Template.fancyTree.getNode = function(event, data){
   var parts = parent.split("|");
   var srv = parts[0];
   var key = "";
-  if( parts.length == 2){
+  if( parts.length > 1){
     key = parts[1];
   }
   else{
@@ -64,12 +64,12 @@ Template.fancyTree.getNode = function(event, data){
       var tre = [];
       for (var i = 0; i < dirCnt; i++) {
         if(dirs[i] != null)
-          tre.push({ title: dirs[i].title, key: srv+"|"+dirs[i].id, icon: dirs[i].tmb, folder: true, lazy: true });
+          tre.push({ title: dirs[i].title, key: srv+"|"+dirs[i].id+"|"+dirs[i].uri, icon: dirs[i].tmb, folder: true, lazy: true });
       }
       var itmCnt = itms.length;
       for (i = 0; i < itmCnt; i++) {
         if(itms[i] != null)
-          tre.push({ title: itms[i].title, key: srv+"|"+itms[i].id, icon: itms[i].tmb, folder: false, lazy: false });
+          tre.push({ title: itms[i].title, key: srv+"|"+itms[i].id+"|"+itms[i].uri, icon: itms[i].tmb, folder: false, lazy: false });
       }
 
       dfd.resolve(tre);
@@ -80,10 +80,16 @@ Template.fancyTree.getNode = function(event, data){
 }
 
 Template.fancyTree.setState = function(node){
+  var parts = node.key.split("|");
+
   var d = {
     title: node.title,
     key: node.key,
     icon: node.icon,
+    pic: !node.isFolder(),
+    srv: parts[0],
+    id: parts[1],
+    uri: parts[2],
   }
 
   setState('dlna.selectedNode', d);
@@ -105,7 +111,7 @@ Template.fancyTree.onRendered(function(){
     dblclick: function (event, data) {
       var node = data.node;
       Template.fancyTree.setState(data.node);
-      if(node.folder ){
+      if(node.isFolder() ){
         var scr = getState('dlna.rendererSelected')
         if(scr != null ){
           var parts = node.key.split("|");

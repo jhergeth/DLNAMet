@@ -1,23 +1,14 @@
 
 <template name="dlnaUI">
     <form class="form-inline" role="form">
-        <div class="form-group">
-            <label class="control-label" for="renderer">To:</label>
-            <select class="form-control" id="renderer" placeholder="Screen">
-                <option></option>
-                {{#with scanRenderer}}
-                    {{#each s in content }}
-                        <option value={{s.id}}>{{s.name}}</option>
-                    {{/each}}
-                {{/with}}
-            </select>
+        <div class="col-sm-6">
             <label class="control-label" for="duration">Duration:</label>
             <input type="text" class="form-control" id="duration" placeholder="Duration (sec)">
             <div class="checkbox">
                 <input type="checkbox" class="form-control"> Random
             </div>
         </div>
-        <div class="form-group">
+        <div class="col-sm-5">
             <button type="button" class="btn btn-primary backk">
                 <span class="glyphicon glyphicon-fast-backward" aria-hidden="true"></span>
             </button>

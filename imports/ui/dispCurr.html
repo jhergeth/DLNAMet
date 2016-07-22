@@ -1,16 +1,19 @@
 
 <template name="dispCurr">
     <div class="row">
-        <div class="row">
-            <div class="col-sm-11"><img class="img-responsive" src={{playPath}} alt={{playPath}}></div>
-        </div>
-        <div class="row">
-            <div class="col-sm-2">Rest time: {{playRestTime}}</div>
-            <div class="col-sm-2"> #{{itemNo}} / {{listLength}}</div>
-            <div class="col-sm-6">{{playList}}</div>
-        </div>
-        <div class="row">
-            <div class="col-sm-11">{{playTitle}}</div>
+        {{> dlnaUI }}
+    </div>
+    <div class="row">
+        <div class="col-sm-5"><img class="img-responsive" src={{playPath}} alt={{playPath}}></div>
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-sm-3">Rest time: {{playRestTime}}</div>
+                <div class="col-sm-3"> #{{itemNo}} / {{listLength}}</div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">{{playList}}</div>
+                <div class="col-sm-3">{{playTitle}}</div>
+            </div>
         </div>
     </div>
 </template>

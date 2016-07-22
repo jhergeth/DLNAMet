@@ -18,7 +18,7 @@ import './dlnaUI.js';
 import './dispCurr.js';
 import './body.html';
 
-const dlnaStatus = Meteor.subscribe('dlna.status');
+// const dlnaStatus = Meteor.subscribe('dlna.status');
 
 let State = null;
 
@@ -38,59 +38,52 @@ export function setState(key, val){
 
 Template.body.onCreated(function bodyOnCreated() {
   State = new ReactiveDict();
+  scanRenderer();
 });
 
 Template.body.helpers({
   tasks() {
     const instance = Template.instance();
-    if (getState('hideCompleted')) {
-      // If hide completed is checked, filter tasks
-      return Tasks.find({ checked: { $ne: true } }, { sort: { createdAt: -1 } });
-    }
-    // Otherwise, return all of the tasks
-    return Tasks.find({}, { sort: { createdAt: -1 } });
-  },
-  incompleteCount() {
-    return Tasks.find({ checked: { $ne: true } }).count();
   },
   selectedNode: function(){
     var sn = getState('dlna.selectedNode');
     return sn?sn.title + ' [' + sn.key + ']':"";
   },
+  selectedPath: function(){
+    var sn = getState('dlna.selectedNode');
+    return sn?sn.uri:"";
+  },
   selectedNodeIcon: function(){
     var sn = getState('dlna.selectedNode');
     return sn?sn.icon:"";
   },
-  playPath: function(){
-    var sn = getState('dlna.selectedNode');
-    return sn?sn.itemPath:"";
+  scanRenderer: function () {
+    return getState('dlna.scanRenderer');
   },
-  playRestTime: function(){
-    var sn = getState('dlna.selectedNode');
-    return sn?sn.restTime:"";
+  duration: function(){
+    return getState('dlna.duration');
+  },
+  random: function(){
+    return getState('dlna.random');
   },
 });
 
 
 
 Template.body.events({
-  'submit .new-task'(event) {
-    // Prevent default browser form submit
-    event.preventDefault();
-
-    // Get value from form element
-    const target = event.target;
-    const text = target.text.value;
-
-    // Insert a task into the collection
-    Meteor.call('tasks.insert', text);
-
-    // Clear form
-    target.text.value = '';
-  },
-  'change .hide-completed input'(event, instance) {
-    setState('hideCompleted', event.target.checked);
-  },
 });
 
 
+
+function scanRenderer(){
+  instance = Template.instance();
+  Meteor.call('dlna.scanRenderer', function (err, res) {
+    // The method call sets the Session variable to the callback value
+    if (err) {
+      setState('dlna.Error', {error: err});
+    } else {
+      setState('dlna.scanRenderer', res);
+      return res;
+    }
+  });
+}
